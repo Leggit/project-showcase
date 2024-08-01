@@ -75,11 +75,11 @@ export default function Home() {
   return (
     <div className="px-0 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
       <div className="px-3 my-8">
-        <h1 className="text-7xl mb-2 font-bold">Hi, I'm Ollie.</h1>
+        <h1 className="text-7xl mb-2 font-bold">{"Hi, I'm Ollie."}</h1>
         <p className="max-w-[500px] md:max-w-[700px] px-1 text-lg mb-2">
-          I'm an enthusiastic results driven developer who loves learning about
+          {`I'm an enthusiastic results driven developer who loves learning about
           new things and using technology to solve problems. Here's a few of the
-          projects I've been working on recently (mostly) for fun.
+          projects I've been working on recently (mostly) for fun.`}
         </p>
         <p className="px-1 text-sm mb-4">
           To find out more about what I do for work checkout my&nbsp;
