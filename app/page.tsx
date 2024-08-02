@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Home() {
   const projects: Project[] = [
@@ -72,10 +73,36 @@ export default function Home() {
     },
   ];
 
+  const placeholder = "{person.name}";
+
+  useEffect(() => {
+    const placeholder = document.getElementById("placeholder")!;
+    const newText = document.getElementById("newText")!;
+
+    placeholder.classList.add("animate-slideOutUp");
+    newText.classList.add("animate-slideInUp", "opacity-100");
+  }, []);
+
   return (
     <div className="px-0 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
       <div className="px-3 my-8">
-        <h1 className="text-7xl mb-2 font-bold">{"Hi, I'm Ollie."}</h1>
+        <h1 className="text-7xl mb-2 font-bold flex">
+          {"Hi, I'm"}&nbsp;
+          <div className="relative">
+            <pre
+              id="placeholder"
+              className="text-secondary font-normal absolute"
+            >
+              {placeholder}
+            </pre>
+            <div
+              id="newText"
+              className="opacity-0 translate-y-1 delay-75 absolute "
+            >
+              Ollie
+            </div>
+          </div>
+        </h1>
         <p className="max-w-[500px] md:max-w-[700px] px-1 text-lg mb-2">
           {`I'm an enthusiastic results driven developer who loves learning about
           new things and using technology to solve problems. Here's a few of the
