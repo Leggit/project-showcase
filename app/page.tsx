@@ -86,14 +86,14 @@ export default function Home() {
   return (
     <div className="px-0 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
       <div className="px-3 my-8">
-        <h1 className="text-7xl mb-2 font-bold">
+        <h1 className="text-7xl mb-4 font-bold">
           {"Hi,"}
           <div className="flex">
             {"I'm"}&nbsp;
             <div className="relative">
               <pre
                 id="placeholder"
-                className="text-secondary font-light delay-200 absolute"
+                className="font-light delay-500 absolute font-serif"
               >
                 {placeholder}
               </pre>
