@@ -3,12 +3,14 @@ import ProjectCard, { Project } from "@/components/project-card";
 import { Button } from "@/components/ui/button";
 import {
   faAngular,
+  faBootstrap,
   faCss3,
   faGoogle,
   faHtml5,
   faJava,
   faJs,
   faLinkedin,
+  faPython,
   faReact,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +27,7 @@ export default function Home() {
       siteUrl: "https://leggit.github.io/boids/",
       repoUrl: "https://github.com/Leggit/boids",
       icons: [faHtml5, faJs, faCss3],
+      isWide: true,
     },
     {
       title: "Algebro",
@@ -52,6 +55,7 @@ export default function Home() {
       siteUrl: "https://leggit.github.io/pid-simulator/",
       repoUrl: "https://github.com/Leggit/pid-simulator",
       icons: [faHtml5, faJs, faCss3],
+      isWide: true,
     },
     {
       title: "Naughts and Crosses (with an AI)",
@@ -63,6 +67,25 @@ export default function Home() {
       icons: [faHtml5, faJs, faCss3],
     },
     {
+      title: "Referencer UI",
+      description:
+        "A simple utility tool to help create academic references in the correct format. This app used to be connected to a backend from which it would retrieve reference formatting information, but now that information is baked in to the frontend so it can be backendless",
+      imageUrl: "/referencerui.png",
+      repoUrl: "https://github.com/Leggit/ReferencerUI/",
+      siteUrl: "https://referencer-ui.netlify.app/",
+      icons: [faAngular, faBootstrap, faPython],
+      isWide: false,
+    },
+    {
+      title: "Referencer admin",
+      description:
+        "Admin backend for entering and maintaining information about the inputs required for different types of references and the format required for each reference type according to the USW Harvard referencing guide." +
+        "Originally used in conjunction with a Java / SQL / Springboot backend, then with a Python / Flask / MongoDB backend, this app is no longer active.",
+      imageUrl: "/referenceradmin.png",
+      repoUrl: "https://github.com/Leggit/ReferencerAdmin/",
+      icons: [faAngular, faPython],
+    },
+    {
       title: "Timex - time booking system",
       description:
         "A frontend for a time entry system that a business could use to record time spent by their employees on differnt projects. It was originally plugged into a Supabase backend but this example is a backenless demo",
@@ -70,6 +93,7 @@ export default function Home() {
       siteUrl: "https://timex-app.netlify.app",
       repoUrl: "https://github.com/Leggit/timex-public",
       icons: [faReact],
+      isWide: true,
     },
   ];
 
@@ -125,11 +149,13 @@ export default function Home() {
         </p>
         <hr className="max-w-[700px]" />
       </div>
-      <div className="flex flex-row flex-wrap ">
+      <div className="flex flex-row flex-wrap justify-center pb-[100px]">
         {projects.map((project, index) => (
           <div
             key={index}
-            className="basis-1/1 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 flex p-2"
+            className={`basis-1/1 sm:basis-1/2 md:basis-1/2 ${
+              project.isWide ? "lg:basis-2/3" : "lg:basis-1/3"
+            } justify-center flex p-2`}
           >
             <ProjectCard {...project} />
           </div>
