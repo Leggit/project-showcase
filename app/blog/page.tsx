@@ -10,7 +10,7 @@ async function BlogHome() {
   return (
     <section>
       <header>
-        <h1 className="text-7xl">Blog Posts</h1>
+        <h1 className="text-7xl">My blog</h1>
       </header>
       <aside>
         <p className="max-w-[500px] md:max-w-[700px] px-1 text-lg mb-8">

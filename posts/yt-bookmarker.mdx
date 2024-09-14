@@ -12,7 +12,7 @@ tags:
 
 _TLDR:_
 
-- _Skip the small talk, <a class="underline" href="https://github.com/Leggit/yt-bookmarker" target="_blank">let me see the code</a>_
+- _Skip the small talk, <a className="underline" href="https://github.com/Leggit/yt-bookmarker" target="_blank">let me see the code</a>_
 - _I just want to know [how to setup autocomplete / code suggestions for writing Chrome extensions](#step-3-setup-autocomplete--code-suggestions-for-the-chrome-api)_
 - _I just want to know [how to load my own Chrome extension](#step-7-deploy-and-test-the-extension-in-chrome)_
 
@@ -22,6 +22,7 @@ Recently, I figured out how to solve a problem that’s been bugging me: trackin
 
 To get started, create a directory to store the different files required by the extension. I called mine yt-bookmarker. In this directory create a file called manifest.json. This tells chrome about the permissions your extension requires (e.g. access to the active tab) and also the different js and html files that your extension needs. Here’s what I put in mine:
 
+<Code name="manifest.json">
 ```json
 {
   "manifest_version": 3,
@@ -46,6 +47,7 @@ To get started, create a directory to store the different files required by the 
   ]
 }
 ```
+</Code>
 
 _Note: This extension uses the Chromes sidepanel area to open out into, rather than a popup. Either works fine, I just preferred how the sidepanel looked._
 
@@ -53,12 +55,13 @@ _Note: This extension uses the Chromes sidepanel area to open out into, rather t
 
 The manifest references a few files that we need to create in the same directory, the first one being background.js, which should look like this:
 
+<Code name="background.js">
 ```JavaScript
-// background.js
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error) => console.error(error));
 ```
+</Code>
 
 All this does is tell chrome to open the sidepanel when the extension icon is clicked.
 
@@ -66,9 +69,11 @@ All this does is tell chrome to open the sidepanel when the extension icon is cl
 
 You might notice that there are no autocomplete suggestions relating to the Chrome API in vscode. A quick fix for this is to create a jsconfig.json file in the same directory as everything else, and add this into it:
 
+<Code name="jsconfig.json">
 ```json
 { "typeAcquisition": { "include": ["chrome"] } }
 ```
+</Code>
 
 You should now get suggestions when using the Chrome API, which makes life a lot easier.
 
@@ -76,8 +81,8 @@ You should now get suggestions when using the Chrome API, which makes life a lot
 
 The next file to create is content.js. This contains code that can run on the content of the current tab, and in this case is used to send information to the main code of the extension, specifically the current video title. Here’s what I put in mine:
 
+<Code name="content.js">
 ```JavaScript
-// content.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getVideoTitle") {
     const result = document.querySelector("#title h1")?.innerText?.trim();
@@ -85,6 +90,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 ```
+</Code>
 
 When asked to “getVideoTitle” by the extension, it returns the trimmed inner text of the h1 tag containing the currently opened video title.
 
@@ -92,6 +98,7 @@ When asked to “getVideoTitle” by the extension, it returns the trimmed inner
 
 Now we are ready to create the main code for the extension, sidepanel.html and sidepanel.js. Lets start with sidepanel.html:
 
+<Code name="sidepanel.html">
 ```html
 <!DOCTYPE html>
 <html>
@@ -136,9 +143,11 @@ Now we are ready to create the main code for the extension, sidepanel.html and s
     </div>
 
     <script src="sidepanel.js"></script>
+
   </body>
 </html>
 ```
+</Code>
 
 sidepanel.html is a basic html document styled using bootstrap 5 (loaded from a CDN) with inputs for adding a new bookmark and a list tag that will be populated through code in sidepanel.js (referenced at the bottom of the body tag).
 
@@ -146,9 +155,8 @@ sidepanel.html is a basic html document styled using bootstrap 5 (loaded from a 
 
 Sidepanel.js should contain the code shown below, which adds functionality for saving a bookmark, disabling the bookmark input when the active tab does is not open on a YouTube video, removing bookmarks, and filtering the displayed bookmarks:
 
+<Code name="sidepanel.js">
 ```JavaScript
-// sidepanel.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const videoName = document.getElementById("videoName");
   const saveButton = document.getElementById("saveBookmark");
@@ -308,6 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 ```
+</Code>
 
 ## Step 7: Deploy and test the extension in Chrome
 
@@ -330,3 +339,7 @@ P.S — there are a lot of improvements and additions that could be made to this
 ---
 
 _Thanks for reading, I hope it’s been helpful! As a reminder, all views I express here are my own and do not necessarily reflect those of my employer (or anyone else for that matter)._
+
+```
+
+```
