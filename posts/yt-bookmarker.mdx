@@ -1,0 +1,332 @@
+---
+title: "How to make a Chrome extension for bookmarking YouTube videos"
+description: "Learn along with me how to make and test your own Chrome extension"
+date: "August 31st, 2024"
+coverImage:
+  alt: "An image showing the finished Chrome extension in use."
+  src: "/posts/yt-bookmarker/main-image.png"
+tags:
+  - title: Chrome
+  - title: JavaScript
+---
+
+_TLDR:_
+
+- _Skip the small talk, <a class="underline" href="https://github.com/Leggit/yt-bookmarker" target="_blank">let me see the code</a>_
+- _I just want to know [how to setup autocomplete / code suggestions for writing Chrome extensions](#step-3-setup-autocomplete--code-suggestions-for-the-chrome-api)_
+- _I just want to know [how to load my own Chrome extension](#step-7-deploy-and-test-the-extension-in-chrome)_
+
+Recently, I figured out how to solve a problem that’s been bugging me: tracking my progress in long YouTube videos without relying on watch history. YouTube is an incredible platform with endless educational content, but I dislike how it logs my watch history, leading to targeted suggestions that waste my time. Turning off watch history fixes that, but it also means losing my place in lengthy videos if the tab closes. So, I decided to create a simple Chrome extension to bookmark my spot in YouTube videos that would allow to me easily reopen those videos at the bookmarked timestamp. This article will show you how I built the extension.
+
+## Step 1: manifest.json
+
+To get started, create a directory to store the different files required by the extension. I called mine yt-bookmarker. In this directory create a file called manifest.json. This tells chrome about the permissions your extension requires (e.g. access to the active tab) and also the different js and html files that your extension needs. Here’s what I put in mine:
+
+```json
+{
+  "manifest_version": 3,
+  "name": "YT Bookmarker",
+  "version": "1.0",
+  "permissions": ["storage", "tabs", "activeTab", "scripting", "sidePanel"],
+  "host_permissions": ["https://www.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Click to open panel"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
+```
+
+_Note: This extension uses the Chromes sidepanel area to open out into, rather than a popup. Either works fine, I just preferred how the sidepanel looked._
+
+## Step 2: background.js
+
+The manifest references a few files that we need to create in the same directory, the first one being background.js, which should look like this:
+
+```JavaScript
+// background.js
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error));
+```
+
+All this does is tell chrome to open the sidepanel when the extension icon is clicked.
+
+## Step 3: Setup autocomplete / code suggestions for the Chrome API
+
+You might notice that there are no autocomplete suggestions relating to the Chrome API in vscode. A quick fix for this is to create a jsconfig.json file in the same directory as everything else, and add this into it:
+
+```json
+{ "typeAcquisition": { "include": ["chrome"] } }
+```
+
+You should now get suggestions when using the Chrome API, which makes life a lot easier.
+
+## Step 4: content.js
+
+The next file to create is content.js. This contains code that can run on the content of the current tab, and in this case is used to send information to the main code of the extension, specifically the current video title. Here’s what I put in mine:
+
+```JavaScript
+// content.js
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "getVideoTitle") {
+    const result = document.querySelector("#title h1")?.innerText?.trim();
+    sendResponse({ result });
+  }
+});
+```
+
+When asked to “getVideoTitle” by the extension, it returns the trimmed inner text of the h1 tag containing the currently opened video title.
+
+## Step 5: sidepanel.html
+
+Now we are ready to create the main code for the extension, sidepanel.html and sidepanel.js. Lets start with sidepanel.html:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTube Bookmarks</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <div class="p-3">
+      <div id="addingContainer">
+        <label class="mb-1">Add bookmark:</label>
+        <textarea
+          id="videoName"
+          type="text"
+          class="form-control mb-2"
+          placeholder="name"
+        ></textarea>
+        <button class="btn btn-primary rounded-pill w-100" id="saveBookmark">
+          Save bookmark
+        </button>
+        <hr />
+      </div>
+
+      <div class="mt-3 border-top-1">
+        <input
+          id="search"
+          type="text"
+          class="form-control mb-3"
+          placeholder="filter"
+        />
+        <ul class="list-group nav" id="bookmarks"></ul>
+      </div>
+    </div>
+
+    <script src="sidepanel.js"></script>
+  </body>
+</html>
+```
+
+sidepanel.html is a basic html document styled using bootstrap 5 (loaded from a CDN) with inputs for adding a new bookmark and a list tag that will be populated through code in sidepanel.js (referenced at the bottom of the body tag).
+
+## Step 6: sidepanel.js
+
+Sidepanel.js should contain the code shown below, which adds functionality for saving a bookmark, disabling the bookmark input when the active tab does is not open on a YouTube video, removing bookmarks, and filtering the displayed bookmarks:
+
+```JavaScript
+// sidepanel.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  const videoName = document.getElementById("videoName");
+  const saveButton = document.getElementById("saveBookmark");
+  const bookmarksContainer = document.getElementById("bookmarks");
+  const searchInput = document.getElementById("search");
+
+  displayAllBookmarks();
+  updateUi();
+
+  // setup event listeners
+  searchInput.addEventListener("input", () => filterBookmarks());
+  saveButton.addEventListener("click", () => addBookmark());
+  chrome.tabs.onActivated.addListener(() => updateUi());
+  chrome.tabs.onUpdated.addListener(() => updateUi());
+
+  function displayAllBookmarks() {
+    chrome.storage.sync.get(["bookmarks"], (result) => {
+      const bookmarks = result.bookmarks || {};
+      displayBookmarks(bookmarks);
+    });
+  }
+
+  function addBookmark() {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const videoId = new URL(tabs[0].url).searchParams.get("v");
+
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tabs[0].id },
+          function: () => document.querySelector("video")?.currentTime,
+        },
+        (results) => {
+          const timestamp = results[0].result;
+          saveBookmark(videoId, videoName.value, timestamp);
+        }
+      );
+    });
+  }
+
+  function filterBookmarks() {
+    chrome.storage.sync.get(["bookmarks"], (result) => {
+      const bookmarks = result.bookmarks || {};
+      if (!searchInput.value) {
+        displayBookmarks(bookmarks);
+      } else {
+        const filteredBookMarks = Object.keys(bookmarks)
+          .map((id) => [id, bookmarks[id]])
+          .filter(([_, bookmark]) =>
+            bookmark.title
+              .toLowerCase()
+              .includes(searchInput.value.toLowerCase())
+          )
+          .reduce((acc, curr) => {
+            acc[curr[0]] = curr[1];
+            return acc;
+          }, {});
+        displayBookmarks(filteredBookMarks);
+      }
+    });
+  }
+
+  function updateUi() {
+    chrome.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
+      const url = new URL(tab.url);
+      if (
+        url.origin === "https://www.youtube.com" &&
+        url.pathname === "/watch"
+      ) {
+        const response = await chrome.tabs.sendMessage(tab.id, {
+          action: "getVideoTitle",
+        });
+        saveButton.disabled = false;
+        videoName.disabled = false;
+        videoName.value = response.result;
+      } else {
+        saveButton.disabled = true;
+        videoName.disabled = true;
+        videoName.value = " ";
+      }
+    });
+  }
+
+  function saveBookmark(videoId, title, timestamp) {
+    chrome.storage.sync.get(["bookmarks"], (result) => {
+      const bookmarks = result.bookmarks || {};
+      bookmarks[videoId] = { title, timestamp };
+
+      chrome.storage.sync.set({ bookmarks }, () => displayBookmarks(bookmarks));
+    });
+  }
+
+  function formatTimeStamp(timestamp) {
+    const hours = Math.floor(timestamp / 3600);
+    const minutes = Math.floor((timestamp % 3600) / 60);
+    const secs = Math.floor(timestamp % 60);
+
+    return [
+      hours.toString().padStart(2, "0"),
+      minutes.toString().padStart(2, "0"),
+      secs.toString().padStart(2, "0"),
+    ].join(":");
+  }
+
+  function displayBookmarks(bookmarks) {
+    bookmarksContainer.innerHTML = "";
+
+    for (const [videoId, bookmark] of Object.entries(bookmarks)) {
+      const bookmarkElement = document.createElement("li");
+      bookmarkElement.className =
+        "list-group-item border-0 p-0 mb-3 nav-item d-flex";
+
+      const linkContainer = document.createElement("a");
+      linkContainer.href = `https://www.youtube.com/watch?v=${videoId}&t=${Math.floor(
+        bookmark.timestamp
+      )}s`;
+      linkContainer.target = "_blank";
+      linkContainer.className = "d-block mb-1 nav-link p-0 m-0";
+
+      const titleDiv = document.createElement("div");
+      titleDiv.textContent = bookmark.title + " - ";
+      titleDiv.href = `https://www.youtube.com/watch?v=${videoId}&t=${Math.floor(
+        bookmark.timestamp
+      )}s`;
+      titleDiv.target = "_blank";
+
+      const timestampDiv = document.createElement("div");
+      timestampDiv.className = "badge bg-light text-dark";
+      timestampDiv.textContent = formatTimeStamp(bookmark.timestamp);
+
+      const removeContainer = document.createElement("div");
+      removeContainer.className = "d-flex flex-row justify-content-center ps-1";
+
+      const removeButton = document.createElement("button");
+      removeButton.className =
+        "btn btn-sm btn-outline-danger bi bi-x-lg m-auto rounded-pill";
+      removeButton.addEventListener("click", () => {
+        removeBookmark(videoId);
+      });
+
+      linkContainer.appendChild(titleDiv);
+      linkContainer.appendChild(timestampDiv);
+      removeContainer.appendChild(removeButton);
+      bookmarkElement.appendChild(linkContainer);
+      bookmarkElement.appendChild(removeContainer);
+      bookmarksContainer.appendChild(bookmarkElement);
+    }
+  }
+
+  function removeBookmark(videoId) {
+    chrome.storage.sync.get(["bookmarks"], (result) => {
+      const bookmarks = result.bookmarks || {};
+      delete bookmarks[videoId];
+
+      chrome.storage.sync.set({ bookmarks }, () => displayBookmarks(bookmarks));
+    });
+  }
+});
+
+```
+
+## Step 7: Deploy and test the extension in Chrome
+
+Most of the hard work is over, now its just a case of loading the extension in. To do this, open Chrome, click the 3 dots in the top right, extensions > manage extensions. That should take you to a page that looks like this:
+
+![Image showing the extensions manager in Chrome](/posts/yt-bookmarker/extension-load-1.png)
+
+Use that toggle in the top left to turn on developer mode, then click the “load unpacked” button that has appeared, and select the yt-bookmarker directory.
+
+![Image showing the unpacked extension loaded into Chrome](/posts/yt-bookmarker/extension-load-1.png)
+
+_NOTE: my version of the extension has a terrible looking icon which I created in Microsoft designer. You can find this icon in the <a href="https://github.com/Leggit/yt-bookmarker" target="_blank">GitHub repository for this project</a>, and reference it in the manifest.json file if you want yours to have the icon too._
+
+Now you should be able to select that extension, open the sidebar and save a bookmark on any tab where you have a YouTube video open. This bookmark will be persisted even if you close and reopen the browser, and if you save it again the timestamp will update as well.
+
+Now I can watch through a course on YouTube in multiple sittings, without having to spend 5 minutes trying to find where I had got up to previously. Happy days!
+
+P.S — there are a lot of improvements and additions that could be made to this extension, such as being able to save multiple bookmarks for a video or saving a bookmark with a comment — if you feel like it why not have a go at adding some of your own features.
+
+---
+
+_Thanks for reading, I hope it’s been helpful! As a reminder, all views I express here are my own and do not necessarily reflect those of my employer (or anyone else for that matter)._

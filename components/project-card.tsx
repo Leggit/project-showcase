@@ -71,6 +71,7 @@ function ProjectCard({
             <AspectRatio ratio={useWideImages && isWide ? 8.7 / 3 : 4 / 3}>
               {loadingImg && <Skeleton className="w-[100%] h-[100%]" />}
               <Image
+                loading="lazy"
                 src={imageUrl}
                 onLoad={() => setLoadingImg(false)}
                 fill
@@ -83,14 +84,14 @@ function ProjectCard({
       </CardContent>
       <CardFooter>
         {siteUrl && (
-          <Button size="sm" className="me-2" asChild>
+          <Button variant="outline" size="sm" className="me-1" asChild>
             <Link target="_blank" href={siteUrl}>
               Visit site &nbsp;
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
             </Link>
           </Button>
         )}
-        <Button size="sm">
+        <Button variant="outline" size="sm">
           <Link target="_blank" href={repoUrl}>
             View code&nbsp;
             <FontAwesomeIcon className="text-lg" icon={faGithub} />

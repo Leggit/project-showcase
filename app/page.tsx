@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 export default function Home() {
   const projects: Project[] = [
@@ -108,9 +108,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="px-0 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
-      <div className="px-3 my-8">
-        <h1 className="text-7xl mb-4 font-bold">
+    <section>
+      <header>
+        <h1 className="text-7xl">
           {"Hi,"}
           <div className="flex">
             {"I'm"}&nbsp;
@@ -147,20 +147,21 @@ export default function Home() {
             </Link>
           </Button>
         </p>
-        <hr className="max-w-[700px]" />
+      </header>
+      <div className="-mx-2 flex flex-row flex-wrap justify-center pb-[100px]">
+        <Suspense fallback={<div>LOADING</div>}>
+          {projects.map((project, index) => (
+            <main
+              key={index}
+              className={`basis-1/1 sm:basis-1/2 md:basis-1/2 ${
+                project.isWide ? "lg:basis-2/3" : "lg:basis-1/3"
+              } justify-center flex p-2`}
+            >
+              <ProjectCard {...project} />
+            </main>
+          ))}
+        </Suspense>
       </div>
-      <div className="flex flex-row flex-wrap justify-center pb-[100px]">
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            className={`basis-1/1 sm:basis-1/2 md:basis-1/2 ${
-              project.isWide ? "lg:basis-2/3" : "lg:basis-1/3"
-            } justify-center flex p-2`}
-          >
-            <ProjectCard {...project} />
-          </div>
-        ))}
-      </div>
-    </div>
+    </section>
   );
 }

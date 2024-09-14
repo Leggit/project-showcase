@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import Navbar from "@/components/navbar";
+import Analytics from "@/components/analytics";
+import Footer from "@/components/footer";
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={"dark " + inter.className}>{children}</body>
+      <body className={"" + "dark " + inter.className}>
+        <div className="px-2 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
+          <Navbar />
+          <div className="my-8">{children}</div>
+        </div>
+        <Footer />
+      </body>
     </html>
   );
 }
