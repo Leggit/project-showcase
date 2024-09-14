@@ -26,7 +26,7 @@ async function BlogPage({ params: { slug } }: any) {
 
   return (
     <main>
-      <article className="max-w-[969px]">
+      <article className="max-w-[969px] m">
         <header>
           <h1>
             {data.title}
