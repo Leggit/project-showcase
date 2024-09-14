@@ -1,6 +1,4 @@
 import React from "react";
-import fs from "fs";
-import matter from "gray-matter";
 import { getPostContent, getSortedPostsData } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { useMDXComponents } from "@/mdx-components";

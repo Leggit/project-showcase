@@ -13,7 +13,9 @@ function Footer() {
       <div className="p-2 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto h-full">
         <div className="flex flex-col justify-center flex-grow flex-1">
           <div className="text-center font-light text-sm">
-            <div>Find out more about what I've been up to in these places:</div>
+            <div>
+              {"Find out more about what I've been up to in these places:"}
+            </div>
             <div className="inline-grid grid-cols-2 gap-2 mt-2">
               <Link
                 href="https://www.linkedin.com/in/oliver-legg-33191b276/"
