@@ -17,14 +17,14 @@ function Code({ name, children }: any) {
   };
 
   return (
-    <div className="rounded-lg border-2 border-zinc-500 mb-4 bg-gray-50 dark:bg-slate-800">
-      <div className="bg-gray-200 dark:bg-slate-900 rounded-t-lg border-b-2 border-zinc-500 flex justify-between">
-        <pre className="p-3">{name}</pre>
+    <div className="border border-zinc-500 mb-4 bg-gray-50 dark:bg-neutral-900">
+      <div className="bg-gray-200 dark:bg-neutral-800 border-b border-zinc-500 flex justify-between">
+        <pre className="p-3">{name}&nbsp;</pre>
         <div className="flex flex-col justify-center">
           <Button
             className="w-[120px] me-2"
             size="sm"
-            variant="ghost"
+            variant="secondary"
             onClick={handleCopy}
           >
             {justCopied ? (
@@ -42,7 +42,7 @@ function Code({ name, children }: any) {
         </div>
       </div>
 
-      <div className="p-3" ref={ref}>
+      <div className="p-3 overflow-y-auto" ref={ref}>
         {children}
       </div>
     </div>

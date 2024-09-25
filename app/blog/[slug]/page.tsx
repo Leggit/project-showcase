@@ -19,7 +19,7 @@ export async function generateMetadata({ params: { slug } }: any) {
 
 async function BlogPage({ params: { slug } }: any) {
   const { content, data } = getPostContent(slug);
-  const MDXComponents = useMDXComponents({});
+  const mdxComponents = useMDXComponents({});
 
   return (
     <main>
@@ -51,7 +51,7 @@ async function BlogPage({ params: { slug } }: any) {
             options={{
               mdxOptions: { rehypePlugins: [rehypeHighlight, rehypeSlug] },
             }}
-            components={MDXComponents}
+            components={mdxComponents}
           />
         </div>
       </article>

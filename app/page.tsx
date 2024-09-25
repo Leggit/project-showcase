@@ -1,4 +1,4 @@
-"use client";
+import NameHeader from "@/components/name-header";
 import ProjectCard, { Project } from "@/components/project-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 
 export default function Home() {
   const projects: Project[] = [
@@ -97,39 +97,10 @@ export default function Home() {
     },
   ];
 
-  const placeholder = "{name}";
-
-  useEffect(() => {
-    const placeholder = document.getElementById("placeholder")!;
-    const newText = document.getElementById("newText")!;
-
-    placeholder.classList.add("animate-slideOutUp");
-    newText.classList.add("animate-slideInUp", "opacity-100");
-  }, []);
-
   return (
     <section>
       <header>
-        <h1 className="text-7xl">
-          {"Hi,"}
-          <div className="flex">
-            {"I'm"}&nbsp;
-            <div className="relative">
-              <pre
-                id="placeholder"
-                className="font-light delay-500 absolute font-serif"
-              >
-                {placeholder}
-              </pre>
-              <div
-                id="newText"
-                className="opacity-0 translate-y-1 delay-500 absolute "
-              >
-                Ollie.
-              </div>
-            </div>
-          </div>
-        </h1>
+        <NameHeader />
         <p className="max-w-[500px] md:max-w-[700px] px-1 text-lg mb-2">
           {`I'm an enthusiastic results driven developer who loves learning about
           new things and using technology to solve problems. Here's a few of the
@@ -149,7 +120,7 @@ export default function Home() {
         </p>
       </header>
       <div className="-mx-2 flex flex-row flex-wrap justify-center pb-[100px]">
-        <Suspense fallback={<div>LOADING</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
           {projects.map((project, index) => (
             <main
               key={index}
