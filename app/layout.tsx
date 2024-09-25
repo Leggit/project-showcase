@@ -4,7 +4,6 @@ import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import Navbar from "@/components/navbar";
-import Analytics from "@/components/analytics";
 import Footer from "@/components/footer";
 config.autoAddCss = false;
 
