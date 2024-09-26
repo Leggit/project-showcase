@@ -5,6 +5,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import Analytics from "@/components/analytics";
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,6 +29,7 @@ export default function RootLayout({
         </div>
         <Footer />
       </body>
+      <Analytics />
     </html>
   );
 }

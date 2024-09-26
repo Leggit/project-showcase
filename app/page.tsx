@@ -106,18 +106,6 @@ export default function Home() {
           new things and using technology to solve problems. Here's a few of the
           projects I've been working on recently (mostly) for fun.`}
         </p>
-        <p className="px-1 text-sm mb-4">
-          To find out more about what I do for work checkout my&nbsp;
-          <Button variant="link" className="m-0 p-0">
-            <Link
-              className="font-semibold"
-              href="https://www.linkedin.com/in/oliver-legg-33191b276/"
-              target="_blank"
-            >
-              LinkedIn <FontAwesomeIcon icon={faLinkedin} />
-            </Link>
-          </Button>
-        </p>
       </header>
       <div className="-mx-2 flex flex-row flex-wrap justify-center pb-[100px]">
         <Suspense fallback={<div>Loading...</div>}>

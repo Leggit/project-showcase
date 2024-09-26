@@ -84,14 +84,14 @@ function ProjectCard({
       </CardContent>
       <CardFooter>
         {siteUrl && (
-          <Button variant="outline" size="sm" className="me-1" asChild>
+          <Button className="me-2" asChild>
             <Link target="_blank" href={siteUrl}>
               Visit site &nbsp;
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
             </Link>
           </Button>
         )}
-        <Button variant="outline" size="sm">
+        <Button>
           <Link target="_blank" href={repoUrl}>
             View code&nbsp;
             <FontAwesomeIcon className="text-lg" icon={faGithub} />

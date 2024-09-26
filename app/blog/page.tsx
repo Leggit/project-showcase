@@ -21,15 +21,11 @@ async function BlogHome() {
       <main>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {allPostsData.map((blogData) => (
-            <Link
-              key={blogData.id}
-              className="flex flex-grow"
-              href={"./blog/" + blogData.id}
-            >
-              <li className="flex flex-grow" key={blogData.id}>
+            <li className="flex flex-grow" key={blogData.id}>
+              <Link className="flex flex-grow" href={"./blog/" + blogData.id}>
                 <BlogCard blogData={blogData} />
-              </li>
-            </Link>
+              </Link>
+            </li>
           ))}
         </ul>
       </main>

@@ -40,9 +40,11 @@ export default function Navbar() {
           target="_blank"
         >
           <FontAwesomeIcon icon={faLinkedin} size="xl" />
+          <span className="sr-only">My LinkedIn</span>
         </Link>
         <Link href="https://github.com/Leggit" target="_blank">
           <FontAwesomeIcon icon={faGithub} size="xl" />
+          <span className="sr-only">My GitHub</span>
         </Link>
       </div>
     </nav>

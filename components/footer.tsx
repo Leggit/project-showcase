@@ -1,11 +1,8 @@
-import {
-  faGithub,
-  faLinkedin,
-  faMedium,
-} from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React from "react";
+import AnalyticsInfo from "./analytics-info";
 
 function Footer() {
   return (
@@ -22,9 +19,11 @@ function Footer() {
                 target="_blank"
               >
                 <FontAwesomeIcon icon={faLinkedin} size="3x" />
+                <span className="sr-only">My LinkedIn</span>
               </Link>
               <Link href="https://github.com/Leggit" target="_blank">
                 <FontAwesomeIcon icon={faGithub} size="3x" />
+                <span className="sr-only">My GitHub</span>
               </Link>
             </div>
             <div className="mt-5">
@@ -40,6 +39,7 @@ function Footer() {
                 </Link>
               </em>
             </div>
+            <AnalyticsInfo />
           </div>
         </div>
       </div>
