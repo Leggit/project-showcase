@@ -16,15 +16,14 @@ function AnalyticsInfo() {
 
   return !doNotTrack ? (
     <div className="mt-5  text-muted-foreground">
-      This site collects basic analytics data - such as how many times this page
-      has been viewed. It <b>never</b> collects personal data (such as your IP
-      address).
+      This site collects anonymous analytics data - such as how many times this
+      page has been viewed. It <b>never</b> collects personal data.
       <p>
         You can still{" "}
         <Button
           variant="link"
           size="sm"
-          className="p-0 text-white"
+          className="p-0 text-white underline font-semibold"
           onClick={setOptOutCookie}
         >
           opt out
@@ -34,9 +33,13 @@ function AnalyticsInfo() {
     </div>
   ) : (
     <div className="mt-5 text-muted-foreground">
-      No analytics data is being collected from your browser on this website.
-      Either because you have opted out here or because you browser has asked
-      this website not to track anything.
+      <p>
+        No analytics data is being collected from your browser by this website.
+      </p>
+      <p>
+        Either because you have opted out here or because you browser has asked
+        this website not to track anything.
+      </p>
     </div>
   );
 }

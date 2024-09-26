@@ -14,7 +14,7 @@ async function BlogHome() {
       </header>
       <aside>
         <p className="max-w-[500px] md:max-w-[700px] px-1 text-lg mb-8">
-          {`Below will be a selection of fairly random blog posts about what I've been doing in my spare time in the world of tech. Any views I express are my own and don't necessarily reflect my employer's or my parent's or my dog's or anyone else's views.`}
+          {`A selection of fairly random posts about what I've been doing in my spare time in the world of tech, that I will be adding to on an unpredictable and most likely fairly rare basis. Any views I express are my own.`}
         </p>
       </aside>
 
