@@ -5,6 +5,7 @@ export const analyticsIsOptedOut = () => {
 };
 
 export const setOptOutCookie = () => {
+  console.log("OPT OUT");
   const cookieName = "analyticsOptOut";
   const cookieValue = "true";
   const daysToExpire = 365;
