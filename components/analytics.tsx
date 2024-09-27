@@ -16,6 +16,7 @@ function Analytics() {
   useEffect(() => setAllowAnalytics(!analyticsIsOptedOut()), []);
 
   return (
+    false &&
     allowAnalytics && (
       <Script
         async
