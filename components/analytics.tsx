@@ -6,9 +6,7 @@ import React, { useEffect, useState } from "react";
 function Analytics() {
   const [allowAnalytics, setAllowAnalytics] = useState(false);
   const isDevelopment = process.env.NODE_ENV === "development";
-  const hostName = `https://project-showcase-hazel.vercel.app${
-    isDevelopment ? ".dev" : ""
-  }`;
+  const hostName = `https://www.olliedoesdev.com${isDevelopment ? ".dev" : ""}`;
   const scriptSrc = `https://scripts.simpleanalyticscdn.com/latest${
     isDevelopment ? ".dev" : ""
   }.js`;
