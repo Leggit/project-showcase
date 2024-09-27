@@ -5,15 +5,20 @@ import { useMDXComponents } from "@/mdx-components";
 import rehypeHighlight from "rehype-highlight";
 import Image from "next/image";
 import rehypeSlug from "rehype-slug";
+import { Metadata } from "next";
 
 export const generateStaticParams = async () => {
   const posts = getSortedPostsData();
   return posts.map((post: any) => ({ slug: post.id }));
 };
 
-export async function generateMetadata({ params: { slug } }: any) {
+export async function generateMetadata({
+  params: { slug },
+}: any): Promise<Metadata> {
+  const { data } = getPostContent(slug);
   return {
-    title: "Leggit",
+    title: { absolute: data.title + " | Ollie's blog" },
+    description: data.description,
   };
 }
 

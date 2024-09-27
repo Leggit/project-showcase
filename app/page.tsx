@@ -1,6 +1,5 @@
 import NameHeader from "@/components/name-header";
 import ProjectCard, { Project } from "@/components/project-card";
-import { Button } from "@/components/ui/button";
 import {
   faAngular,
   faBootstrap,
@@ -9,12 +8,9 @@ import {
   faHtml5,
   faJava,
   faJs,
-  faLinkedin,
   faPython,
   faReact,
 } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { Suspense } from "react";
 
 export default function Home() {

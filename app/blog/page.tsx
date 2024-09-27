@@ -3,9 +3,16 @@ import React from "react";
 import { getSortedPostsData } from "../../lib/posts";
 import Link from "next/link";
 import BlogCard from "@/components/blog-card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ollie's blog",
+  description:
+    "A selection of fairly random posts about what I've been doing in my spare time in the world of tech",
+};
 
 async function BlogHome() {
-  const allPostsData = await getSortedPostsData();
+  const allPostsData = getSortedPostsData();
 
   return (
     <section>
