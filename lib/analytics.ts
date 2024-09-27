@@ -16,5 +16,5 @@ export const setOptOutCookie = () => {
 
   document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 
-  window.location.reload();
+  window.parent.location.reload();
 };
