@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Button } from "./ui/button";
-import { analyticsIsOptedOut, setOptOutCookie } from "@/lib/analytics";
+import { analyticsIsOptedOut, setAnalyticsOptOut } from "@/lib/analytics";
 
 function AnalyticsInfo() {
   const isDevelopment = process.env.NODE_ENV === "development";
@@ -24,7 +24,7 @@ function AnalyticsInfo() {
           variant="link"
           size="sm"
           className="p-0 text-white underline font-semibold"
-          onClick={setOptOutCookie}
+          onClick={setAnalyticsOptOut}
         >
           opt out
         </Button>{" "}
