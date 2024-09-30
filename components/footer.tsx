@@ -1,8 +1,5 @@
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React from "react";
-import AnalyticsInfo from "./analytics-info";
 
 function Footer() {
   return (
@@ -23,7 +20,6 @@ function Footer() {
                 </Link>
               </em>
             </div>
-            <AnalyticsInfo />
           </div>
         </div>
       </div>
