@@ -1,0 +1,308 @@
+---
+title: "Making a calendar component using React, NextJS, TailwindCSS and the Temporal API"
+description: "Code along with me as I make a dynamic calendar component which you can expand upon and use in your own projects."
+date: "October 20th, 2024"
+coverImage:
+  alt: "A calendar display"
+  src: "/posts/nextjs-calendar/image-4.png"
+tags:
+  - title: Next.js
+  - title: TypeScript
+  - title: TemporalAPI
+  - title: TailwindCSS
+---
+
+_GitHub repository for this project -> <a className="underline" href="https://github.com/Leggit/calendar-demo" target="_blank">here</a>._
+
+## Introduction
+
+Many different types of applications require some sort of calendar interface. The Gregorian calendar introduces some challenges with this, as different months come in different sizes and months can start on any day of the week. The calendar component shown in this article is arranged such that either 5 or 6 weeks will be shown stacked on top of each other to display the entire month as well as any days from the previous or next month that must be displayed in order to complete the first and last weeks.
+
+## Temporal API
+
+To help with some of the date calculations required for this project we will use the new Temporal API, a proposed replacement for the JavaScript Date API, which is much easier to use, includes a number of helpful utilities, and should help avoid some of the common pitfalls associated with the Date API (Find out more about these issues here). At time of writing the Temporal API is only in the proposal stage so we will have to install a Polyfill to use it; but hopefully it will soon be widely supported across browsers as it has the potential to make working with dates/times a lot easier, less error prone, and may even remove the need for external libraries such as date-fns.
+
+## Step 1: Create a NextJS applications
+
+Open up a terminal and run the following command:
+
+<Code>
+```shell
+npx create-next-app@latest calendar-demo
+```
+</Code>
+
+Make sure you go with all the default options like I did, particularly the option to include TailwindCSS:
+
+![Image showing all the default options for create next app](/posts/nextjs-calendar/image-2.png)
+
+Open the folder created by this command in your code editor / IDE of choice and remove most of the default code included in the page.ts file at the top of the app directory so it looks like this:
+
+<Code name="app/page.tsx">
+```TypeScript
+export default function Home() {
+  return <div className="min-h-screen flex flex-col p-4">hi</div>;
+}
+```
+</Code>
+
+Now start the application by opening a terminal and running npm run dev. Then check everything is working by opening localhost:3000 in your browser.
+
+## Step 2: Create a calendar component
+
+Create a directory called “components” at the root of the project, and a file called “Calendar.tsx” inside this directory. Then add in the basic boilerplate code of a React component, along with the “use client” directive at the top of the file — as this component will need to use client side hooks:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+"use client"
+
+import React from "react";
+
+function Calendar() {
+  return <div></div>;
+}
+
+export default Calendar;
+```
+</Code>
+
+Load this component into the page.tsx file so you can see changes made to it as we develop:
+
+<Code name="app/page.tsx">
+```TypeScript
+import Calendar from "@/components/Calendar";
+
+export default function Home() {
+  return (
+    <div className="min-h-screen flex flex-col p-4">
+      <Calendar />
+    </div>
+  );
+}
+```
+</Code>
+
+While we’re in the app directory lets quickly add some styles to the globals.css file for some basic buttons that we’ll use for navigation in the calendar:
+
+<Code name="app/globals.css">
+```css
+/* add this at the bottom of app/gloabls.css */
+.btn {
+  @apply font-bold py-2 px-4 rounded;
+}
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+  @apply bg-blue-700;
+}
+```
+</Code>
+
+Then back in the Calendar component we can start by adding Next and Previous buttons for jumping through different months in the calendar:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+function Calendar() {
+  const next = () => {};
+
+  const previous = () => {};
+
+  return (
+    <div className="flex-grow flex flex-col max-h-screen">
+      <div className="flex justify-start mb-4">
+        <button className="btn btn-blue w-[120px] me-2" onClick={previous}>
+          &lt; Previous
+        </button>
+        <button className="btn btn-blue w-[120px]" onClick={next}>
+          Next &gt;
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+</Code>
+
+If you save these changes you should now be able to see two blue buttons on the home page of the application.
+
+Now lets implement the next and previous event handlers. First install a polyfill for the temporal API and import this into the Calendar component:
+
+<Code>
+```shell
+npm i @js-temporal/polyfill
+```
+</Code>
+
+Add this import to the top of Calendar.tsx
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+import { Temporal } from "temporal-polyfill";
+```
+</Code>
+
+Then we need to add state for the month and year that are currently being viewed — add this to the top of the calendar component so these values are initialized to the current month and year:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+const [month, setMonth] = useState(Temporal.Now.plainDateISO().month);
+const [year, setYear] = useState(Temporal.Now.plainDateISO().year);
+```
+</Code>
+
+Then in the next event handler we can use the Temporal API to add a month to the currently viewed month/year combo:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+const next = () => {
+  const { month: nextMonth, year: nextYear } = Temporal.PlainYearMonth.from({
+    month,
+    year,
+  }).add({ months: 1 });
+  setMonth(nextMonth);
+  setYear(nextYear);
+};
+```
+</Code>
+
+And do similar but with a subtract in the previous event handler:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+const previous = () => {
+  const { month: prevMonth, year: prevYear } = Temporal.PlainYearMonth.from({
+    month,
+    year,
+  }).subtract({ months: 1 });
+  setMonth(prevMonth);
+  setYear(prevYear);
+};
+```
+</Code>
+
+Now to test this add a h2 to the TSX in Calendar.tsx to display the current month:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+ return (
+  <div className="flex-grow flex flex-col max-h-screen">
+    <div className="flex justify-start mb-4">
+      <button className="btn btn-blue w-[120px] me-2" onClick={previous}>
+        &lt; Previous
+      </button>
+      <button className="btn btn-blue w-[120px]" onClick={next}>
+        Next &gt;
+      </button>
+    </div>
+    {/* Add this div: */}
+    <h2 className="text-lg font-semibold">
+      {Temporal.PlainDate.from({ year, month, day: 1 }).toLocaleString("en", {
+        month: "long",
+        year: "numeric",
+      })}
+    </h2>
+  </div>
+);
+```
+</Code>
+
+This should show you something like what’s shown below — use the next and previous buttons to cycle through months and years to check its working:
+
+![Image displaying progress so far](/posts/nextjs-calendar/image-3.png)
+
+## Step 3: Create the actual calendar display
+
+Firstly we need to add some more state, to hold an array which will represent all the days to be displayed on the screen:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+// Add to components/Calendar.tsx underneath the other bits of state:
+const [monthCalendar, setMonthCalendar] = useState<{ date: Temporal.PlainDate; isInMonth: boolean }[]>([]);
+```
+</Code>
+
+Each item in the array will be an object containing the date of that day, and a boolean flag that will be false if the day is not in the month currently being viewed, but is needed to pad out the first or last week of the month.
+
+Now we will use a useEffect hook to populate the monthCalendar whenever the month or year change:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+// useEffect means the calendar will update when input parameters change
+// Dont forget to import useEffect from React at the top of the file
+useEffect(() => {
+  const fiveWeeks = 5 * 7;
+  const sixWeeks = 6 * 7;
+  const startOfMonth = Temporal.PlainDate.from({ year, month, day: 1 });
+  const monthLength = startOfMonth.daysInMonth;
+  const dayOfWeekMonthStartedOn = startOfMonth.dayOfWeek - 1;
+  // Calculate the overall length including days from the previous and next months to be shown
+  const length =
+    dayOfWeekMonthStartedOn + monthLength > fiveWeeks ? sixWeeks : fiveWeeks;
+
+  // Create blank array
+  const calendar = new Array(length)
+    .fill({})
+    // Populate each day in the array
+    .map((_, index) => {
+      const date = startOfMonth.add({
+        days: index - dayOfWeekMonthStartedOn,
+      });
+      return {
+        isInMonth: !(
+          index < dayOfWeekMonthStartedOn ||
+          index - dayOfWeekMonthStartedOn >= monthLength
+        ),
+        date,
+      };
+    });
+
+  setMonthCalendar(calendar);
+}, [year, month]);
+```
+</Code>
+
+This logic determines which day of the week the month starts on, then uses this along with the length of the month in days to determine if 5 or 6 weeks need to be displayed. It then creates an array of days starting on the nearest Monday to the start of the month and finishing on the Sunday which is either 5 weeks or 6 weeks from there.
+
+Before we display the calendar lets quickly add a display for the weekday names beneath the h2 used to show the month and year:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+<div className="grid grid-cols-7">
+  {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+    (name, index) => (<div key={index}>{name}</div>)
+  )}
+</div>
+```
+</Code>
+
+Now all we need to do is add another grid beneath this to display all the days of the month:
+
+<Code name="components/Calendar.tsx">
+```TypeScript
+<div className="grid grid-cols-7 flex-grow">
+  {monthCalendar.map((day, index) => (
+    <div
+      key={index}
+      className={`border border-slate-700 p-2 ${
+        day.isInMonth
+        ? "bg-black hover:bg-gray-800"
+        : "bg-slate-500 hover:bg-slate-600 font-light text-slate-400"
+      }`}
+     >
+       {day.date.day}
+     </div>
+   ))}
+</div>
+```
+</Code>
+
+After saving this change and refreshing the page in the browser you should be presented something that looks like this — a calendar!
+
+![Image showing the completed calendar component](/posts/nextjs-calendar/image-4.png)
+
+---
+
+_Thanks for reading, I hope it’s been helpful! As a reminder, all views I express here are my own and do not necessarily reflect those of my employer (or anyone else for that matter)._
+
+
