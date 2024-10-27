@@ -36,9 +36,6 @@ async function BlogPage({ params: { slug } }: any) {
               <em className="mb-4 block text-sm font-light mt-2">
                 {data.description}
               </em>
-              <small className="mb-4 block text-sm font-light mt-2">
-                {data.date}
-              </small>
             </h1>
           </header>
 

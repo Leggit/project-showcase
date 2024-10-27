@@ -39,13 +39,12 @@ function BlogCard({ blogData }: { blogData: BlogData }) {
         </div>
       </CardContent>
       <CardFooter>
-        <div className="">
+        <div>
           <div className="grid grid-flow-col gap-2">
             {blogData.tags.map((tag, index) => (
               <Badge key={index}>{tag.title}</Badge>
             ))}
           </div>
-          <p className="font-light text-sm mt-2">{blogData.date}</p>
         </div>
       </CardFooter>
     </Card>
