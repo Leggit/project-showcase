@@ -1,0 +1,49 @@
+---
+title: "4 reasons why Angular is easier to learn than React"
+description: "Lot's of people seem to think React is easier to pick up and use. I think there is an argument that Angular is actually easier to learn."
+date: "January 27th, 2025"
+coverImage:
+  alt: "Angular vs React"
+  src: "/posts/angular-learning-curve/main-image.png"
+tags:
+  - title: Angular
+  - title: React
+  - title: My Opinion
+---
+
+It’s a commonly held opinion: Angular is a more difficult framework to learn than React. But I think that’s not true.
+
+For starters, it’s an invalid comparison. Angular is a framework, React is a library. Sure, there’s more to learn when it comes to Angular, but if you want to build a fully functional application using React you’ll have to learn how to use a bunch of other libraries with it anyway.
+
+Semantics aside, I think there are 4 key reasons why Angular is at the very least not more difficult to learn than React:
+
+## 1. The Angular CLI
+
+Firstly, the Angular CLI does lots of useful stuff for you. Don’t like using the command line? There are VS Code extensions that allow you to leverage the power of the CLI through a graphical interface. It automatically puts skeleton code in each file for you so you don’t have to worry about writing the same boilerplate over and over again. It uses conventions for file and folder names so everything is consistent and Angular developers can easily understand what is going on in any Angular project, even if it was created by a completely different set of developers. React on the other hand…do you use camel case? Kebab case? It may seem like a small gripe but little things like this make codebases so much easier to understand quickly.
+
+![Naming in Angular vs naming in React](/posts/angular-learning-curve/naming.png)
+
+## 2. Basic state management
+
+Secondly, basic state is much easier to manage. Want a two way binding with something in your HTML? Declare a field in your component’s class, and reference in the template using banana in a box syntax. Simple. In React? You need to use the useState hook. You need to import useState, setup the property and setter for it, then you can reference it in your template — but that’s only one way. If you want two way you also have to bind an event handler to the setter. Maybe it’s just what I’m used to but that seems more complex.
+
+![Basic component comparison](/posts/angular-learning-curve/basic-input.png)
+
+## 3. Services vs Context
+
+On a related note, Angular services are so useful. They make state and logic portable throughout your application, and you can do fancy stuff using dependency injection to change your applications behavior if you need to. React’s equivalent as far as I can tell is the context API. I don’t find this intuitive to use — you have to create the context, create a provider, place that provider somewhere in your component tree, then use the context in your components. In Angular, you create a service (using the CLI…easy) and inject that in your components. Done. A decently complex application can be created with just Angular services and a bit of RXJS; React on the other hand, has you reaching for some overly complex state management library (another thing to learn!) as soon as you get past a basic ToDo list application.
+
+## 4. Angular makes a lot of decisions for you
+
+Finally, Angular is easy because it makes the decisions for you. No need to worry about state management libraries until you want to make a really complex application. No need to learn hooks, just how to use basic [] and () syntax. No need to worry about file naming conventions. Angular has it’s own HTTP module for making requests. Angular has basic pipes available for formatting data in the UI. Angular sets up unit testing for you so you have no excuse not to write them. Angular has it’s own easy to use localisation library etc.
+
+## Conclusion
+
+I think all these reasons combined mean it’s actually easier for someone to pick up Angular and make a decently well written application that other developers would be able to understand and maintain.
+
+But hot takes aside, I think React is a fantastic UI library — there’s a reason why it’s so popular. I enjoy working with both, but have a bias towards Angular as I learned to use it before I picked up React (which is probably the biggest factor in determining what people find easier to use). Both frameworks (or libraries) come from highly successful tech companies — Google and Facebook/Meta — and both are widely used to create rich and interactive web experiences. Try both and use whatever feels more intuitive to you.
+
+
+---
+
+_Thanks for reading, I hope it’s been helpful! As a reminder, all views I express here are my own and do not necessarily reflect those of my employer (or anyone else for that matter)._

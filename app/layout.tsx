@@ -21,7 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={"" + "dark " + inter.className}>
+      <body
+        className={
+          "" +
+          "dark " +
+          inter.className +
+          " bg-gradient-to-r from-slate-900 to-slate-700"
+        }
+      >
         <div className="px-2 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
           <Navbar />
           <div className="my-8">{children}</div>
