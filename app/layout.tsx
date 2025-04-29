@@ -29,7 +29,7 @@ export default function RootLayout({
           " bg-gradient-to-r from-slate-900 to-slate-700"
         }
       >
-        <div className="px-2 md:px-2 lg:px-4 max-w-[1400px] xl:m-auto">
+        <div className="px-4 md:px-4 lg:px-4 max-w-[1400px] xl:m-auto">
           <Navbar />
           <div className="my-8">{children}</div>
         </div>

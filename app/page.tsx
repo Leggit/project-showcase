@@ -16,6 +16,15 @@ import { Suspense } from "react";
 export default function Home() {
   const projects: Project[] = [
     {
+      title: "Mapshifter",
+      description:
+        "Mapshifter uses a tool called GDAL to load geospatial data in various formats, display that data to you on a map, and then to convert that data to alternate formats. Essentially it's a lightweight web based GIS application. It's built using NextJS and Shadcn and uses OpenLayers for visually displaying the geospatial data.",
+      imageUrl: "/mapshifter.png",
+      siteUrl: "https://mapshifter.vercel.app/",
+      icons: [faHtml5, faJs, faCss3, faReact],
+      isWide: true,
+    },
+    {
       title: "Flocking simulator (boids algorithm)",
       description:
         "A visual display that demonstrates how three simple rules can lead to flocking behaviour. Have a play with the coeficients to see how each one plays their part.",
@@ -23,7 +32,7 @@ export default function Home() {
       siteUrl: "https://leggit.github.io/boids/",
       repoUrl: "https://github.com/Leggit/boids",
       icons: [faHtml5, faJs, faCss3],
-      isWide: true,
+      isWide: false,
     },
     {
       title: "Algebro",
@@ -35,13 +44,14 @@ export default function Home() {
       icons: [faJava, faAngular, faGoogle],
     },
     {
-      title: "geovis-lite",
+      title: "Timex - time booking system",
       description:
-        "A quick and dirty way of visualising geometries supplied in GeoJSON or WKT format",
-      imageUrl: "/geovislite.png",
-      siteUrl: "https://leggit.github.io/geovis-lite/",
-      repoUrl: "https://github.com/Leggit/geovis-lite",
+        "A frontend for a time entry system that a business could use to record time spent by their employees on differnt projects. It was originally plugged into a Supabase backend but this example is a backenless demo.",
+      imageUrl: "/timex.png",
+      siteUrl: "https://timex-app.netlify.app",
+      repoUrl: "https://github.com/Leggit/timex-public",
       icons: [faReact],
+      isWide: true,
     },
     {
       title: "PID Simulator",
@@ -52,6 +62,15 @@ export default function Home() {
       repoUrl: "https://github.com/Leggit/pid-simulator",
       icons: [faHtml5, faJs, faCss3],
       isWide: true,
+    },
+    {
+      title: "geovis-lite",
+      description:
+        "A quick and dirty way of visualising geometries supplied in GeoJSON or WKT format",
+      imageUrl: "/geovislite.png",
+      siteUrl: "https://leggit.github.io/geovis-lite/",
+      repoUrl: "https://github.com/Leggit/geovis-lite",
+      icons: [faReact],
     },
     {
       title: "Naughts and Crosses (with an AI)",
@@ -81,26 +100,23 @@ export default function Home() {
       repoUrl: "https://github.com/Leggit/ReferencerAdmin/",
       icons: [faAngular, faPython],
     },
-    {
-      title: "Timex - time booking system",
-      description:
-        "A frontend for a time entry system that a business could use to record time spent by their employees on differnt projects. It was originally plugged into a Supabase backend but this example is a backenless demo",
-      imageUrl: "/timex.png",
-      siteUrl: "https://timex-app.netlify.app",
-      repoUrl: "https://github.com/Leggit/timex-public",
-      icons: [faReact],
-      isWide: true,
-    },
   ];
 
   return (
     <section>
       <header>
         <NameHeader />
-        <p className="max-w-[500px] md:max-w-[700px] px-1 text-lg mb-2">
+        <p className="max-w-[500px] md:max-w-[750px] px-1 text-lg mb-2">
           {`I'm an enthusiastic results driven developer who loves learning about
-          new things and using technology to solve problems. Here's a few of the
-          projects I've been working on recently (mostly) for fun.`}
+          new things and using technology to solve problems. This page lists a few of the
+          projects I've been working on recently (mostly) for fun, to find out more about what I've been up to professionally you can`}{" "}
+          <a
+            className="underline"
+            href="https://www.linkedin.com/in/oliver-legg-33191b276/"
+            target="_blank"
+          >
+            check out my LinkedIn
+          </a>
         </p>
       </header>
       <div className="-mx-2 flex flex-row flex-wrap justify-center pb-[100px]">

@@ -25,7 +25,7 @@ export interface Project {
   title: string;
   description: string;
   siteUrl?: string;
-  repoUrl: string;
+  repoUrl?: string;
   imageUrl: string;
   icons: IconDefinition[];
   isWide?: boolean;
@@ -91,12 +91,14 @@ function ProjectCard({
             </Link>
           </Button>
         )}
-        <Button>
-          <Link target="_blank" href={repoUrl}>
-            View code&nbsp;
-            <FontAwesomeIcon className="text-lg" icon={faGithub} />
-          </Link>
-        </Button>
+        {repoUrl && (
+          <Button>
+            <Link target="_blank" href={repoUrl}>
+              View code&nbsp;
+              <FontAwesomeIcon className="text-lg" icon={faGithub} />
+            </Link>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

@@ -16,7 +16,7 @@ function Footer() {
                   href="https://github.com/Leggit/project-showcase"
                   target="_blank"
                 >
-                  here
+                  on github
                 </Link>
               </em>
             </div>
