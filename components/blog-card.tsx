@@ -18,15 +18,15 @@ import { Badge } from "./ui/badge";
 function BlogCard({ blogData }: { blogData: BlogData }) {
   const [loadingImg, setLoadingImg] = useState(true);
   return (
-    <Card className="bg-card flex-1 flex-grow flex flex-col">
+    <Card className="bg-card flex-1 flex-grow flex flex-col w-full">
       <CardHeader className="flex-grow">
         <CardTitle>{blogData.title}</CardTitle>
         <CardDescription>{blogData.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="w-[100%]">
+        <div className="w-full">
           <AspectRatio ratio={16 / 9}>
-            {loadingImg && <Skeleton className="w-[100%] h-[100%]" />}
+            {loadingImg && <Skeleton className="w-full h-full" />}
             <Image
               loading="lazy"
               src={blogData.coverImage.src}
@@ -39,12 +39,10 @@ function BlogCard({ blogData }: { blogData: BlogData }) {
         </div>
       </CardContent>
       <CardFooter>
-        <div>
-          <div className="grid grid-flow-col gap-2">
-            {blogData.tags.map((tag, index) => (
-              <Badge key={index}>{tag.title}</Badge>
-            ))}
-          </div>
+        <div className="flex gap-2 flex-wrap">
+          {blogData.tags.map((tag, index) => (
+            <Badge key={index}>{tag.title}</Badge>
+          ))}
         </div>
       </CardFooter>
     </Card>

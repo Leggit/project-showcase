@@ -4,6 +4,7 @@ import { getSortedPostsData } from "../../lib/posts";
 import Link from "next/link";
 import BlogCard from "@/components/blog-card";
 import { Metadata } from "next";
+import * as motion from "framer-motion/client";
 
 export const metadata: Metadata = {
   title: "Ollie's blog",
@@ -27,10 +28,24 @@ async function BlogHome() {
 
       <main>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {allPostsData.map((blogData) => (
+          {allPostsData.map((blogData, index) => (
             <li className="flex flex-grow" key={blogData.id}>
-              <Link className="flex flex-grow" href={"./blog/" + blogData.id}>
-                <BlogCard blogData={blogData} />
+              <Link
+                className="flex flex-grow w-full"
+                href={"./blog/" + blogData.id}
+              >
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: "easeOut",
+                  }}
+                  className="flex flex-grow w-full"
+                >
+                  <BlogCard blogData={blogData} />
+                </motion.section>
               </Link>
             </li>
           ))}

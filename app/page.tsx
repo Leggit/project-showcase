@@ -12,6 +12,7 @@ import {
   faReact,
 } from "@fortawesome/free-brands-svg-icons";
 import { Suspense } from "react";
+import * as motion from "framer-motion/client";
 
 export default function Home() {
   const projects: Project[] = [
@@ -119,20 +120,27 @@ export default function Home() {
           </a>
         </p>
       </header>
-      <div className="-mx-2 flex flex-row flex-wrap justify-center pb-[100px]">
+      <main className="-mx-2 flex flex-row flex-wrap justify-center pb-[100px]">
         <Suspense fallback={<div>Loading...</div>}>
           {projects.map((project, index) => (
-            <main
+            <motion.section
               key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: "easeOut",
+              }}
               className={`basis-1/1 sm:basis-1/2 md:basis-1/2 ${
                 project.isWide ? "lg:basis-2/3" : "lg:basis-1/3"
               } justify-center flex p-2`}
             >
               <ProjectCard {...project} />
-            </main>
+            </motion.section>
           ))}
         </Suspense>
-      </div>
+      </main>
     </section>
   );
 }
