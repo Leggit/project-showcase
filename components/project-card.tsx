@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
   IconDefinition,
+  faFileLines,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
@@ -26,6 +27,7 @@ export interface Project {
   description: string;
   siteUrl?: string;
   repoUrl?: string;
+  blogUrl?: string;
   imageUrl: string;
   icons: IconDefinition[];
   isWide?: boolean;
@@ -39,6 +41,7 @@ function ProjectCard({
   imageUrl,
   icons,
   isWide,
+  blogUrl,
 }: Project) {
   const [loadingImg, setLoadingImg] = useState(true);
   const [useWideImages, setUseWideImages] = useState(false);
@@ -96,6 +99,14 @@ function ProjectCard({
             <Link target="_blank" href={repoUrl}>
               View code&nbsp;
               <FontAwesomeIcon className="text-lg" icon={faGithub} />
+            </Link>
+          </Button>
+        )}
+        {blogUrl && (
+          <Button className="ms-2">
+            <Link target="_blank" href={blogUrl}>
+              Write up&nbsp;
+              <FontAwesomeIcon className="text-lg" icon={faFileLines} />
             </Link>
           </Button>
         )}

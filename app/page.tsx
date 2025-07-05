@@ -17,6 +17,28 @@ import * as motion from "framer-motion/client";
 export default function Home() {
   const projects: Project[] = [
     {
+      title: "AI Form Builder",
+      description:
+        "A form builder that uses AI to generate forms based on a description you provide. It uses CopilotKit to allow LLM's to interact with the frontend application.",
+      imageUrl: "/aiformbuilder.webp",
+      repoUrl: "https://github.com/Leggit/cpk-demo",
+      blogUrl:
+        "https://medium.com/@olliedoesdev/using-copilotkit-to-make-build-an-ai-agent-into-a-frontend-web-application-9f07a8a30178",
+      icons: [faHtml5, faJs, faCss3, faReact],
+      isWide: false,
+    },
+    {
+      title: "PhoneGPT",
+      description:
+        "A simple RAG application that demonstrates how to use a vector database (Supabase + Postgres) to store and retrieve information, and then use that information to provide up to date context to a Large Language Model",
+      imageUrl: "/phone-gpt.png",
+      blogUrl:
+        "https://medium.com/@olliedoesdev/create-a-rag-application-using-next-js-supabase-and-openais-text-embedding-3-small-model-7f290c028766",
+      repoUrl: "https://github.com/Leggit/nextjs-rag",
+      icons: [faReact, faJs, faHtml5, faCss3],
+      isWide: true,
+    },
+    {
       title: "Mapshifter",
       description:
         "Mapshifter uses a tool called GDAL to load geospatial data in various formats, display that data to you on a map, and then to convert that data to alternate formats. Essentially it's a lightweight web based GIS application. It's built using NextJS and Shadcn and uses OpenLayers for visually displaying the geospatial data.",
