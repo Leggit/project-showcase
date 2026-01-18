@@ -62,7 +62,6 @@ export default function Home() {
       description:
         "At first glance, its just a calculator...but this calculator shows its workings - view the binary tree to discover how computers interpret mathematic expressions.",
       imageUrl: "/algebro.png",
-      siteUrl: "https://algebro.netlify.app/calculator",
       repoUrl: "https://github.com/Leggit/Algebro",
       icons: [faJava, faAngular, faGoogle],
     },
